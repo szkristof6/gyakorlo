@@ -1,18 +1,41 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <div class="content">
+      <template v-if="LoadedUser">
+        <section>
+          <b-table
+            :data="users"
+            :columns="columns"
+            striped
+          >
+          </b-table>
+        </section>
+      </template>
+      <b-skeleton height="30px" :active="!LoadedUser" :count="4"></b-skeleton>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import { mapState } from 'vuex';
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld,
+  computed: mapState('users', ['users', 'LoadedUser']),
+  data() {
+    return {
+      columns: [
+        {
+          field: 'name',
+          label: 'Név',
+        },
+        {
+          field: 'pont',
+          label: 'Pont',
+        },
+      ],
+      page: 1,
+      perPage: 5,
+    };
   },
 };
 </script>
